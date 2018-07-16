@@ -8,19 +8,16 @@ from test_framework.test_utils import enable_executor_hook
 def reconstruct_preorder(preorder):
     if not preorder:
         return None
-    return _reconstruct_preorder(preorder, 0)[0]
+    return _reconstruct_preorder(iter(preorder))
 
 
-def _reconstruct_preorder(preorder, _from):
-    if preorder[_from] is None:
-        return None, 1
-    elif preorder[_from + 1] == preorder[_from + 2] == None:
-        return BinaryTreeNode(preorder[_from]), 3
-    else:
-        left, l_size_including_nones = _reconstruct_preorder(preorder, _from + 1)
-        right, r_size_including_nones = _reconstruct_preorder(preorder, _from + 1 + l_size_including_nones)
-        total_size = 1 + r_size_including_nones + l_size_including_nones
-        return BinaryTreeNode(preorder[_from], left, right), total_size
+def _reconstruct_preorder(preorder_iter):
+    head = next(preorder_iter)
+    if head is None:
+            return None
+    left = _reconstruct_preorder(preorder_iter)
+    right = _reconstruct_preorder(preorder_iter)
+    return BinaryTreeNode(head, left, right)
 
 
 @enable_executor_hook

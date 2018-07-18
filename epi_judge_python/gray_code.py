@@ -6,8 +6,18 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def gray_code(num_bits):
-    # TODO - you fill in here.
-    return []
+    if num_bits == 0:
+        return [0]
+    if num_bits == 1:
+        return [0, 1]
+
+    subgray_code = gray_code(num_bits - 1)
+
+    return prepend(subgray_code, 0) + list(reversed(prepend(subgray_code, 1)))
+
+
+def prepend(subgray_code, bit):
+    return [(n << 1) + bit for n in subgray_code]
 
 
 @enable_executor_hook

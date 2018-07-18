@@ -1,9 +1,11 @@
-from functools import lru_cache
+from functools import lru_cache, partial
 
 from test_framework import generic_test
 
+memoize = partial(lru_cache, maxsize=None)()
 
-@lru_cache(maxsize=None)
+
+@memoize
 def fibonacci(n):
     if n < 2:
         return n

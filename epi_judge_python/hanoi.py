@@ -1,4 +1,5 @@
 import functools
+from collections import deque
 
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
@@ -8,8 +9,20 @@ NUM_PEGS = 3
 
 
 def compute_tower_hanoi(num_rings):
-    # TODO - you fill in here.
-    return []
+    _from, _to = 0, 1
+    return list(_compute_tower_hanoi(num_rings, _from, _to))
+
+
+def _compute_tower_hanoi(num_rings, _from, _to):
+    if num_rings == 1:
+        return deque([(_from, _to)])
+
+    free_ring = next(iter({0, 1, 2} ^ {_from, _to}))
+    first_step = _compute_tower_hanoi(num_rings - 1, _from=_from, _to=free_ring)
+    second_step = deque([(_from, _to)])
+    third_step = _compute_tower_hanoi(num_rings - 1, _from=free_ring, _to=_to)
+
+    return first_step + second_step + third_step
 
 
 @enable_executor_hook

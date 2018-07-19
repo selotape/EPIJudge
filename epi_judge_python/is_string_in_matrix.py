@@ -13,15 +13,16 @@ def is_pattern_contained_in_grid(grid, S):
                 yield (a_i, a_j)
 
     @functools.lru_cache(maxsize=None)
-    def can_pattern_start_from(pat, i, j):
-        if grid[i][j] != pat[0]:
+    def can_pattern_start_from(offset, i, j):
+        if grid[i][j] != S[offset]:
             return False
-        if len(pat) == 1:
+        new_offset = offset+1
+        if new_offset == len(S):
             return True
 
-        return any(can_pattern_start_from(pat[1:], a_i, a_j) for a_i, a_j in adjacencies(i, j))
+        return any(can_pattern_start_from(new_offset, a_i, a_j) for a_i, a_j in adjacencies(i, j))
 
-    return any(can_pattern_start_from(tuple(S), i, j) for i in range(n) for j in range(m))
+    return any(can_pattern_start_from(0, i, j) for i in range(n) for j in range(m))
 
 
 if __name__ == '__main__':

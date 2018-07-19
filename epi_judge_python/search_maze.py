@@ -11,9 +11,31 @@ WHITE, BLACK = range(2)
 Coordinate = collections.namedtuple('Coordinate', ('x', 'y'))
 
 
+def neighbors(c, maze):
+    n, m = len(maze), len(maze[0])
+
+    for x, y in ((c.x - 1, c.y), (c.x + 1, c.y), (c.x, c.y - 1), (c.x, c.y + 1)):
+        if 0 <= x < n and 0 <= y < m and maze[x][y] is WHITE:
+            yield Coordinate(x, y)
+
+
 def search_maze(maze, s, e):
-    # TODO - you fill in here.
-    return []
+    visited = set()
+    path = []
+
+    def visit(c):
+        path.append(c)
+        visited.add(c)
+        if c == e:
+            return path
+        for c_n in neighbors(c, maze):
+            if c_n not in visited:
+                res = visit(c_n)
+                if res:
+                    return path
+        path.pop()
+
+    return visit(s)
 
 
 def path_element_is_feasible(maze, prev, cur):

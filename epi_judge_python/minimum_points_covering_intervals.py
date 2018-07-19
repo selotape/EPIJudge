@@ -8,8 +8,20 @@ Interval = collections.namedtuple('Interval', ('left', 'right'))
 
 
 def find_minimum_visits(intervals):
-    # TODO - you fill in here.
-    return 0
+    if not intervals:
+        return 0
+
+    min_right = float('inf')
+    visits = []
+
+    for inter in intervals:
+        if inter.left <= min_right:
+            min_right = min(min_right, inter.right)
+        else:
+            visits.append(min_right)
+            min_right = inter.right
+
+    return len(visits)+1
 
 
 @enable_executor_hook

@@ -2,8 +2,28 @@ from test_framework import generic_test
 
 
 def longest_contained_range(A):
-    # TODO - you fill in here.
-    return 0
+    unhandled = set(A)
+    best = 0
+    while len(unhandled) > 0:
+        item = unhandled.pop()
+        item_interval_len = _consume_neighbors(item, unhandled)
+        best = max(best, item_interval_len)
+    return best
+
+
+def _consume_neighbors(item, unhandled):
+    bigger, smaller = item + 1, item - 1
+    interval_len = 1
+    while bigger in unhandled:
+        unhandled.remove(bigger)
+        bigger += 1
+        interval_len += 1
+    while smaller in unhandled:
+        unhandled.remove(smaller)
+        smaller -= 1
+        interval_len += 1
+
+    return interval_len
 
 
 if __name__ == '__main__':

@@ -13,17 +13,14 @@ def longest_contained_range(A):
 
 def _consume_neighbors(item, unhandled):
     bigger, smaller = item + 1, item - 1
-    interval_len = 1
     while bigger in unhandled:
         unhandled.remove(bigger)
         bigger += 1
-        interval_len += 1
     while smaller in unhandled:
         unhandled.remove(smaller)
         smaller -= 1
-        interval_len += 1
 
-    return interval_len
+    return bigger - smaller - 1
 
 
 if __name__ == '__main__':
